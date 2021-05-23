@@ -1,0 +1,12 @@
+{
+  "commit": {
+    "commit": "a52e43f47cc81ff80b7d0ad18f3d346c0241a9c5",
+    "author": "richelbilderbeek <richel@richelbilderbeek.nl>",
+    "time": "2021-05-23 14:43:27",
+    "files": 1,
+    "merge": false,
+    "message": "Test on Linux, Mac, Windows\n"
+  },
+  "remote": "https://github.com/ropensci/babette",
+  "pkg": "babette"
+}

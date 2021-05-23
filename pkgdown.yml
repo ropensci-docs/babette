@@ -1,0 +1,14 @@
+pandoc: '2.5'
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  demo: demo.html
+  examples: examples.html
+  nested_sampling: nested_sampling.html
+  step_by_step: step_by_step.html
+  tutorial: tutorial.html
+last_built: 2021-07-14T02:37Z
+urls:
+  reference: https://docs.ropensci.org/babette/reference
+  article: https://docs.ropensci.org/babette/articles
+

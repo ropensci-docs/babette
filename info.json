@@ -1,0 +1,12 @@
+{
+  "commit": {
+    "commit": "b760159296547122f209f4d973ab8034085dfbd9",
+    "author": "richelbilderbeek <richel@richelbilderbeek.nl>",
+    "time": "2023-09-26 14:08:01",
+    "files": 2,
+    "merge": false,
+    "message": "Expose #26\n"
+  },
+  "repo": "https://github.com/ropensci/babette",
+  "pkg": "babette"
+}

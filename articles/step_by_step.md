@@ -1,0 +1,166 @@
+# babette: Step by Step
+
+## Introduction
+
+![](babette_logo.png)
+
+This step-by-step demo shows how to run the `babette` pipeline in
+detail.
+
+First, load `babette`:
+
+``` r
+
+library(babette)
+```
+
+In all cases, this is done for a short MCMC chain length of 10K:
+
+``` r
+
+inference_model <- create_inference_model()
+inference_model$mcmc$chain_length <- 10000
+inference_model$mcmc$tracelog$filename <- normalizePath(
+  get_beautier_tempfilename(
+    pattern = "tracelog_", fileext = ".log"
+  ),
+  mustWork = FALSE
+)
+inference_model$mcmc$treelog$filename <- normalizePath(
+  get_beautier_tempfilename(
+    pattern = "treelog_",
+    fileext = ".trees"
+  ),
+  mustWork = FALSE
+)
+```
+
+## Create a ‘BEAST2’ input file
+
+This step is commonly done using BEAUti. With `babette`, this can be
+done as follows:
+
+``` r
+
+beast2_input_file <- tempfile(pattern = "beast2_", fileext = ".xml")
+create_beast2_input_file_from_model(
+  input_filename = get_babette_path("anthus_aco.fas"),
+  inference_model = inference_model,
+  output_filename = beast2_input_file
+)
+```
+
+## Display (part of) the ‘BEAST2’ input file
+
+``` r
+
+print(head(readLines(beast2_input_file)))
+#> [1] "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><beast beautitemplate='Standard' beautistatus='' namespace=\"beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood\" required=\"\" version=\"2.4\">"
+#> [2] ""                                                                                                                                                                                                                                                                                                                                                                                   
+#> [3] ""                                                                                                                                                                                                                                                                                                                                                                                   
+#> [4] "    <data"                                                                                                                                                                                                                                                                                                                                                                          
+#> [5] "id=\"anthus_aco\""                                                                                                                                                                                                                                                                                                                                                                  
+#> [6] "name=\"alignment\">"
+```
+
+This file can both be loaded by BEAUti and be used by ‘BEAST2’.
+
+The file can be checked if it is indeed a valid input file:
+
+``` r
+
+if (is_beast2_installed()) {
+  is_beast2_input_file(beast2_input_file)
+}
+```
+
+## Run MCMC
+
+This step is commonly done using ‘BEAST2’ from the command-line or using
+its GUI. With `babette`, this can be done as follows:
+
+``` r
+
+if (is_beast2_installed()) {
+  beast2_options <- create_beast2_options(
+    input_filename = beast2_input_file
+  )
+  beastier::check_can_create_file(beast2_options$output_state_filename)
+  beastier::check_can_create_treelog_file(beast2_options)
+  run_beast2_from_options(
+    beast2_options = beast2_options
+  )
+  if (!file.exists(beast2_options$output_state_filename)) {
+    stop("the filename should have been created.")
+  }
+}
+```
+
+## Display (part of) the ‘BEAST2’ output files
+
+The `.log` file contains the model parameters and parameter estimates:
+
+``` r
+
+if (is_beast2_installed()) {
+  print(head(readLines(inference_model$mcmc$tracelog$filename)))
+  print(tail(readLines(inference_model$mcmc$tracelog$filename)))
+}
+```
+
+The `.trees` file contains the alignment, taxa and posterior trees:
+
+``` r
+
+if (is_beast2_installed()) {
+  print(head(readLines(inference_model$mcmc$treelog$filename)))
+  print(tail(readLines(inference_model$mcmc$treelog$filename)))
+}
+```
+
+The `.xml.state` file contains the final state of the MCMC run and the
+MCMC operator acceptances thus far:
+
+``` r
+
+if (is_beast2_installed()) {
+  print(head(readLines(beast2_options$output_state_filename)))
+  print(tail(readLines(beast2_options$output_state_filename)))
+}
+```
+
+## Parse output
+
+This step is commonly done using Tracer. With `babette`, this can be
+done as follows.
+
+Parsing `.log` file to obtain the parameter estimates:
+
+``` r
+
+if (is_beast2_installed()) {
+  knitr::kable(
+    head(parse_beast_tracelog_file(inference_model$mcmc$tracelog$filename))
+  )
+}
+```
+
+Parsing `.trees` file to obtain the posterior phylogenies:
+
+``` r
+
+if (is_beast2_installed()) {
+  plot_densitree(parse_beast_trees(inference_model$mcmc$treelog$filename))
+}
+```
+
+Parsing `.xml.state` file to obtain the MCMC operator acceptances:
+
+``` r
+
+if (is_beast2_installed()) {
+  knitr::kable(
+    head(parse_beast_state_operators(beast2_options$output_state_filename))
+  )
+}
+```

@@ -1,0 +1,304 @@
+# babette Tutorial
+
+## Introduction
+
+![](babette_logo.png)
+
+This vignette is a tutorial how to use `babette` and its most important
+`bbt_run_from_model` function.
+
+First, load `babette`:
+
+``` r
+
+library(babette)
+#> Loading required package: beautier
+#> Warning: package 'beautier' was built under R version 4.6.1
+#> Loading required package: beastier
+#> Warning: package 'beastier' was built under R version 4.6.1
+#> 
+#> Attaching package: 'beastier'
+#> The following objects are masked from 'package:beautier':
+#> 
+#>     is_on_appveyor, is_on_ci, is_on_travis
+#> Loading required package: mauricer
+#> Warning: package 'mauricer' was built under R version 4.6.1
+#> Loading required package: tracerer
+```
+
+The main function of `babette` is `bbt_run_from_model`. Here is part of
+its help:
+
+    Do a full run: create a 'BEAST2' configuration file (like BEAUti 2), 
+    run 'BEAST2', parse results (like Tracer)
+
+    Usage
+
+    bbt_run_from_model(
+      fasta_filename,
+      inference_model,
+      beast2_options
+    )
+
+Simplifying this to all arguments that do not have a default:
+
+    bbt_run_from_model(
+      fasta_filename
+    )
+
+## `fasta_filename`
+
+`fasta_filename` is the argument to specify which FASTA file to work on.
+`babette` is bundled with some FASTA files, so obtaining a path to a
+FASTA file is easy:
+
+``` r
+
+fasta_filename <- get_babette_path("anthus_aco_sub.fas")
+file.exists(fasta_filename)
+#> [1] TRUE
+```
+
+With `fasta_filename` available, we have the minimal requirements to
+call `bbt_run_from_model` like this:
+
+    out <- bbt_run_from_model(fasta_filename)
+
+Note that this code is not ran, as it would take too long. The reason
+this would take too long, is that the MCMC run that will be executed is
+set to one million states by default. To specify the MCMC options and
+shorten this run, the `mcmc` argument is used.
+
+## `inference_model` and `mcmc`
+
+The inference run’s MCMC is part of the inference model. To get an
+inference model with a short MCMC, create a test inference model like
+this:
+
+``` r
+
+inference_model <- create_test_inference_model()
+names(inference_model)
+#> [1] "site_model"        "clock_model"       "tree_prior"       
+#> [4] "mrca_prior"        "mcmc"              "beauti_options"   
+#> [7] "tipdates_filename"
+```
+
+`mcmc` is the `inference_model` argument to specify the MCMC run
+options:
+
+``` r
+
+print(inference_model$mcmc$chain_length)
+#> [1] 3000
+```
+
+With these MCMC options, we can now call `bbt_run_from_model` in way
+that it will finish fast:
+
+``` r
+
+if (is_beast2_installed()) {
+  beast2_options <- create_beast2_options()
+  out <- bbt_run_from_model(
+    fasta_filename = fasta_filename,
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+  bbt_delete_temp_files(
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+}
+```
+
+The return value, `out` contains the results of the MCMC run. For this
+tutorial, visualizing `out` is ignored, as the ‘Demo’ vignette discusses
+this. Instead, we will work through the other `bbt_run_from_model`
+parameters.
+
+## `site_model`
+
+`site_model` is the `inference_model` parameter for a site model. As
+this tutorial works on a DNA alignment, such a site model can also be
+called a nucleotide substitution model.
+
+Picking a site model is easy: just type:
+
+    create_site_model_
+
+This will trigger auto-complete to show all site models.
+
+The simplest site model is the Jukes-Cantor DNA substitution model. To
+use this model in `babette`, do:
+
+``` r
+
+inference_model <- create_test_inference_model(
+  site_model = create_jc69_site_model()
+)
+```
+
+Using this site model:
+
+``` r
+
+if (is_beast2_installed()) {
+  beast2_options <- create_beast2_options()
+  out <- bbt_run_from_model(
+    fasta_filename = fasta_filename,
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+  bbt_delete_temp_files(
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+}
+```
+
+## `clock_model`
+
+`clock_models` is the `inference_model` parameter for a clock model.
+
+Picking a clock model is easy: just type:
+
+    create_clock_model_
+
+This will trigger auto-complete to show all clock models.
+
+The simplest site model is the strict clock model. To use this model in
+`babette`, do:
+
+``` r
+
+inference_model <- create_test_inference_model(
+  clock_model = create_strict_clock_model()
+)
+```
+
+Using this clock model:
+
+``` r
+
+if (is_beast2_installed()) {
+  beast2_options <- create_beast2_options()
+  out <- bbt_run_from_model(
+    fasta_filename = fasta_filename,
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+  bbt_delete_temp_files(
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+}
+```
+
+## `tree_prior`
+
+`tree_prior` is the `inference_model` parameter to select a tree prior.
+
+Picking a tree prior is easy: just type:
+
+    create_tree_prior_
+
+This will trigger auto-complete to show all tree priors.
+
+The simplest tree prior is the Yule (pure-birth) tree prior. To use this
+model in `babette`, do:
+
+``` r
+
+inference_model <- create_test_inference_model(
+  tree_prior = create_yule_tree_prior()
+)
+```
+
+Using this tree prior:
+
+``` r
+
+if (is_beast2_installed()) {
+  beast2_options <- create_beast2_options()
+  out <- bbt_run_from_model(
+    fasta_filename = fasta_filename,
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+  bbt_delete_temp_files(
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+}
+```
+
+## `mrca_prior`
+
+`mrca_priors` is the `inference_model` parameter to use a Most Recent
+Common Ancestor (hence, MRCA) prior. With such a prior, it can be
+specified which taxa have a shared common ancestor and when it existed.
+
+Here is how to specify that the first two taxa in a FASTA file are
+sister species:
+
+``` r
+
+mrca_prior <- create_mrca_prior(
+  alignment_id = get_alignment_id(fasta_filename = fasta_filename),
+  taxa_names = get_taxa_names(filename = fasta_filename)[1:2],
+  is_monophyletic = TRUE
+)
+```
+
+To specify when the MRCA of all taxa was present, we’ll first create a
+prior distribution of the crown age, after which we can use that
+distribution.
+
+To assume the crown age to follow a normal distribution, with a mean of
+15.0 (time units), with a standard deviation of 1.0, use
+`create_normal_distr`:
+
+``` r
+
+mrca_distr <- create_normal_distr(
+  mean = 15.0,
+  sigma = 1.0
+)
+```
+
+To use that distribution in our MRCA prior:
+
+``` r
+
+mrca_prior <- create_mrca_prior(
+  alignment_id = get_alignment_id(fasta_filename = fasta_filename),
+  taxa_names = get_taxa_names(filename = fasta_filename),
+  mrca_distr = mrca_distr
+)
+```
+
+Using such an MRCA prior:
+
+``` r
+
+inference_model <- create_test_inference_model(
+  mrca_prior = mrca_prior
+)
+```
+
+``` r
+
+if (is_beast2_installed()) {
+  beast2_options <- create_beast2_options()
+  out <- bbt_run_from_model(
+    fasta_filename = fasta_filename,
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+  bbt_delete_temp_files(
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+}
+```

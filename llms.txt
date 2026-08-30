@@ -1,0 +1,228 @@
+# babette
+
+[![Peer Review
+Status](https://badges.ropensci.org/209_status.svg)](https://github.com/ropensci/software-review/issues/209)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/babette)](https://cran.r-project.org/package=babette)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/babette)](https://CRAN.R-project.org/package=babette)
+[![](http://cranlogs.r-pkg.org/badges/babette)](https://CRAN.R-project.org/package=babette)
+
+| Branch | [![GitHub Actions logo](reference/figures/GitHubActions.png)](https://github.com/ropensci/babette/actions) | [![Codecov logo](reference/figures/Codecov.png)](https://about.codecov.io/) |
+|----|----|----|
+| `main` | [![R-CMD-check](https://github.com/ropensci/babette/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ropensci/babette/actions/workflows/R-CMD-check.yaml) | [![codecov.io](https://codecov.io/github/ropensci/babette/coverage.svg?branch=main)](https://app.codecov.io/github/ropensci/babette/branch/main) |
+| `develop` | [![R-CMD-check](https://github.com/ropensci/babette/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop)](https://github.com/ropensci/babette/actions/workflows/R-CMD-check.yaml) | [![codecov.io](https://codecov.io/github/ropensci/babette/coverage.svg?branch=develop)](https://app.codecov.io/github/ropensci/babette/branch/develop) |
+
+[![DOI](https://zenodo.org/badge/118616108.svg)](https://zenodo.org/badge/latestdoi/118616108)
+
+`babette` is an R package that combines:
+
+- [beautier](https://github.com/ropensci/beautier) creates a BEAST2
+  input (`.xml`) file from an inference model
+- [tiebeaur](https://github.com/richelbilderbeek/tiebeaur) creates an
+  inference model from a BEAST2 input (`.xml`) file ⚠️ experimental ⚠️
+- [beastier](https://github.com/ropensci/beastier) runs BEAST2
+- [mauricer](https://github.com/ropensci/mauricer) install BEAST2
+  packages
+- [tracerer](https://github.com/ropensci/tracerer) parses BEAST2 output
+  (`.log`, `.trees`, etc) files.
+
+![babette logo](reference/figures/babette_logo.png)
+
+babette logo
+
+Non-CRAN extensions:
+
+- [beastierinstall](https://github.com/richelbilderbeek/beastierinstall)
+  Install and uninstall BEAST2
+- [mauricerinstall](https://github.com/richelbilderbeek/mauricerinstall)
+  Install and uninstall BEAST2 packages
+
+Related R packages:
+
+- [lumier](https://github.com/ropensci/lumier): Shiny app to help create
+  the function call needed
+
+Related R functions:
+
+| Related function | `babette` function |
+|----|----|
+| `[ips::rbeauti](https://github.com/heibl/ips/blob/main/R/rbeauti.R)` | `[beautier::create_beast2_input_from_model](https://github.com/ropensci/beautier/blob/main/R/create_beast2_input_from_model.R)` |
+
+Related software:
+
+- [BEASTifier](https://github.com/josephwb/BEASTifier): command-line
+  tool to generate BEAST2 XML input files
+
+## Examples
+
+See:
+
+- [lumier](https://github.com/ropensci/lumier): R Shiny app to help
+  create the R function call needed
+- [examples](https://github.com/richelbilderbeek/babette_examples):
+  examples tested by Travis CI and AppVeyor
+- [article](https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13032),
+  in ‘Methods in Ecology and Evolution’
+- [Methods.blog post: The babette R Package: How to Sooth the
+  Phylogenetic
+  BEAST2](https://methodsblog.com/2018/06/25/babette-beast2/)
+- [rOpenSci blog post: Call BEAST2 for Bayesian evolutionary analysis
+  from R](https://ropensci.org/blog/2020/01/28/babette/)
+- [pre-print article](https://doi.org/10.1101/271866), in bioRxiv
+- [‘babette’ YouTube
+  channel](https://www.youtube.com/watch?v=nA-0-Fc95xY&list=PLu8_ZyzXyRDFIRx-kdDI5Q6xVr-HnY7TB)
+
+## Installation
+
+See [doc/install.md](https://docs.ropensci.org/babette/doc/install.md)
+(or just click [here](https://docs.ropensci.org/babette/doc/install.md))
+
+## FAQ
+
+See [FAQ](https://docs.ropensci.org/babette/doc/faq.md).
+
+## Missing features/unsupported
+
+`babette` cannot do everything `BEAUti` and `BEAST2` and `Tracer` can.
+
+See [beautier](https://github.com/ropensci/beautier) for missing
+features in creating a BEAST2 input (`.xml`) file.
+
+See [beastier](https://github.com/ropensci/beastier) for missing
+features in running BEAST2
+
+See [mauricer](https://github.com/ropensci/mauricer) for missing
+features in installing BEAST2 packages.
+
+See [tracerer](https://github.com/ropensci/tracerer) for missing
+features in parsing BEAST2 output (`.log`, `.trees`, etc) files.
+
+## There is a feature I miss
+
+See [CONTRIBUTING](https://docs.ropensci.org/babette/CONTRIBUTING.md),
+at `Submitting use cases`
+
+## I want to collaborate
+
+See [CONTRIBUTING](https://docs.ropensci.org/babette/CONTRIBUTING.md),
+at `Submitting code`
+
+## I think I have found a bug
+
+See [CONTRIBUTING](https://docs.ropensci.org/babette/CONTRIBUTING.md),
+at `Submitting bugs`
+
+## There’s something else I want to say
+
+Sure, just add an Issue. Or send an email.
+
+## External links
+
+- [BEAST2 GitHub](https://github.com/CompEvol/beast2)
+
+## References
+
+Article about `babette`:
+
+- Bilderbeek, Richèl JC, and Rampal S. Etienne. “babette: BEAUti 2,
+  BEAST 2 and Tracer for R.” Methods in Ecology and Evolution (2018).
+  <https://doi.org/10.1111/2041-210X.13032>
+
+&nbsp;
+
+    @article{bilderbeek2018babette,
+      title={babette: BEAUti 2, BEAST 2 and Tracer for R},
+      author={Bilderbeek, Richèl JC and Etienne, Rampal S},
+      journal={Methods in Ecology and Evolution},
+      year={2018},
+      publisher={Wiley Online Library}
+    }
+
+FASTA files `anthus_aco.fas` and `anthus_nd2.fas` from:
+
+- Van Els, Paul, and Heraldo V. Norambuena. “A revision of species
+  limits in Neotropical pipits Anthus based on multilocus genetic and
+  vocal data.” Ibis.
+
+# Package index
+
+## All functions
+
+- [`bbt_continue()`](https://docs.ropensci.org/babette/reference/bbt_continue.md)
+  : Continue a BEAST2 run
+
+- [`bbt_delete_temp_files()`](https://docs.ropensci.org/babette/reference/bbt_delete_temp_files.md)
+  : Delete all the temporary files created by bbt_run_from_model
+
+- [`bbt_run()`](https://docs.ropensci.org/babette/reference/bbt_run.md)
+  : Run BEAST2
+
+- [`bbt_run_from_model()`](https://docs.ropensci.org/babette/reference/bbt_run_from_model.md)
+  : Run BEAST2
+
+- [`bbt_self_test()`](https://docs.ropensci.org/babette/reference/bbt_self_test.md)
+  : Do a self test to verify babette that works correctly.
+
+- [`check_beast2_pkgs()`](https://docs.ropensci.org/babette/reference/check_beast2_pkgs.md)
+  :
+
+  Checks if `bbt_run` has the 'BEAST2' packages needed to process its
+  arguments. Will [stop](https://rdrr.io/r/base/stop.html) if not.
+
+- [`create_test_bbt_run_output()`](https://docs.ropensci.org/babette/reference/create_test_bbt_run_output.md)
+  :
+
+  Get an example output of `bbt_run` or `bbt_run_from_model`.
+
+- [`create_test_ns_output()`](https://docs.ropensci.org/babette/reference/create_test_ns_output.md)
+  : Create NS testing output
+
+- [`default_params_doc()`](https://docs.ropensci.org/babette/reference/default_params_doc.md)
+  : This function does nothing. It is intended to inherit is parameters'
+  documentation.
+
+- [`get_alignment_ids_from_xml()`](https://docs.ropensci.org/babette/reference/get_alignment_ids_from_xml.md)
+  : Get the alignment IDs from one or more 'BEAST2' XML input files.
+
+- [`get_babette_path()`](https://docs.ropensci.org/babette/reference/get_babette_path.md)
+  :
+
+  Get the full path of a file in the `inst/extdata` folder
+
+- [`get_babette_paths()`](https://docs.ropensci.org/babette/reference/get_babette_paths.md)
+  :
+
+  Get the full paths of files in the `inst/extdata` folder
+
+- [`is_dropbox_path()`](https://docs.ropensci.org/babette/reference/is_dropbox_path.md)
+  : Detect if a path is inside a Dropbox-backed folder
+
+- [`parse_beast2_output()`](https://docs.ropensci.org/babette/reference/parse_beast2_output.md)
+  : Process the 'BEAST2' output dependent on 'BEAST2' package specifics
+
+- [`parse_beast2_output_to_ns()`](https://docs.ropensci.org/babette/reference/parse_beast2_output_to_ns.md)
+  : Parse BEAST2 NS output
+
+- [`plot_densitree()`](https://docs.ropensci.org/babette/reference/plot_densitree.md)
+  : Draw multiple trees on top of one another.
+
+- [`prepare_file_creation()`](https://docs.ropensci.org/babette/reference/prepare_file_creation.md)
+  : Internal function to prepare for 'BEAST2' creating files
+
+- [`update_babette()`](https://docs.ropensci.org/babette/reference/update_babette.md)
+  : Deprecated function.
+
+- [`warn_if_dropbox()`](https://docs.ropensci.org/babette/reference/warn_if_dropbox.md)
+  : Warn when using files in a Dropbox-backed folder
+
+# Articles
+
+### All vignettes
+
+- [babette demo](https://docs.ropensci.org/babette/articles/demo.md):
+- [Examples](https://docs.ropensci.org/babette/articles/examples.md):
+- [Nested
+  Sampling](https://docs.ropensci.org/babette/articles/nested_sampling.md):
+- [babette: Step by
+  Step](https://docs.ropensci.org/babette/articles/step_by_step.md):
+- [babette
+  Tutorial](https://docs.ropensci.org/babette/articles/tutorial.md):

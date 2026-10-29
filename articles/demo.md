@@ -1,0 +1,121 @@
+# babette demo
+
+## Introduction
+
+![](babette_logo.png)
+
+This vignette briefly demonstrates multiple features of `babette`,
+without going into much detail.
+
+First, load the library:
+
+``` r
+
+library(babette)
+```
+
+This vignette shows how to:
+
+- Let `babette` run ‘BEAST2’
+- Plot the posterior estimates
+- Show the effective sample sizes (ESS)
+- Show the summary statistics
+- Plot the posterior phylogenies
+
+In all cases, this is done for a short MCMC chain length of 10K:
+
+``` r
+
+inference_model <- create_test_inference_model()
+```
+
+Also, in all cases, we use the same BEAST2 options:
+
+``` r
+
+beast2_options <- create_beast2_options(verbose = TRUE)
+```
+
+## Let `babette` run ‘BEAST2’
+
+For an alignment, we’ll use a `babette` example alignment.
+
+``` r
+
+if (is_beast2_installed()) {
+  out <- bbt_run_from_model(
+    fasta_filename = get_babette_path("anthus_aco_sub.fas"),
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+  bbt_delete_temp_files(
+    inference_model = inference_model,
+    beast2_options = beast2_options
+  )
+}
+```
+
+## Plot the posterior estimates
+
+``` r
+
+if (is_beast2_installed()) {
+  library(ggplot2)
+  p <- ggplot(
+    data = out$estimates,
+    aes(x = Sample)
+  )
+  p + geom_line(aes(y = TreeHeight), color = "green")
+  p + geom_line(aes(y = YuleModel), color = "red")
+  p + geom_line(aes(y = birthRate), color = "blue")
+}
+```
+
+## Show the effective sample sizes (ESS)
+
+Effective sample sizes, with 20% burn-in removed:
+
+``` r
+
+if (is_beast2_installed()) {
+  traces <- remove_burn_ins(
+    traces = out$estimates,
+    burn_in_fraction = 0.2
+  )
+  esses <- t(
+    calc_esses(
+      traces,
+      sample_interval = inference_model$mcmc$tracelog$log_every
+    )
+  )
+  colnames(esses) <- "ESS"
+  knitr::kable(esses)
+}
+```
+
+For a reliable inference, use an ESS of at least 200.
+
+## Show the summary statistics
+
+``` r
+
+if (is_beast2_installed()) {
+  sum_stats <- t(
+    calc_summary_stats(
+      traces$posterior,
+      sample_interval = inference_model$mcmc$tracelog$log_every
+    )
+  )
+  colnames(sum_stats) <- "Statistic"
+  knitr::kable(sum_stats)
+}
+```
+
+## Plot the posterior phylogenies
+
+``` r
+
+if (is_beast2_installed()) {
+  plot_densitree(out$anthus_aco_sub_trees, width = 2)
+}
+```
